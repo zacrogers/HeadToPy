@@ -33,7 +33,9 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: Build package
+        uses: actions/setup-python@v4
         run: ls ../..; python3 setup.py sdist bdist_wheel
 
       - name: PyPI Publish
