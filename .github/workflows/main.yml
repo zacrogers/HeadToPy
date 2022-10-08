@@ -3,7 +3,6 @@ on: [push]
 jobs:
   publish:
     name: Publish to PyPI
-      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         password: ${{ secrets.HEAD_TO_PY_PYPI_API_TOKEN }}
