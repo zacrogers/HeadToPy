@@ -9,7 +9,6 @@ typedef enum
 }cgb_flag_e;
 
 
-
 typedef enum
 {
 	NONE              = (uint16_t)0x0000,
@@ -104,7 +103,6 @@ typedef struct
 	int cats;
 	uint8_t hats;
 }another_struct_t;
-
 
 
 typedef struct

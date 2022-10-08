@@ -1,5 +1,5 @@
 ''' 
-    Convert enums and constant defines in a c header to a python equivalent.
+    Convert enums and structs in a c header to a python equivalent.
     It will only convert typedef'd enums and must be named in snake case. 
 '''
 import argparse
@@ -7,7 +7,6 @@ from enum import Enum
 import re
 import logging
 from datetime import datetime
-from pprint import pprint
 
 logging.basicConfig(level=logging.INFO)
 
@@ -302,7 +301,6 @@ def _clear_header_flags(header_file: str):
 
     with open(f"1_{header_file}", mode="w") as head:
         head.write(new_head)
-
 
 
 def convert(file_from: str, file_to: str, copy_comments=True, clear_flags=False) -> None:
