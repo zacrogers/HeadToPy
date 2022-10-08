@@ -1,5 +1,7 @@
 # C Header to Python
 
+[![Publish](https://github.com/zacrogers/HeadToPy/actions/workflows/main.yml/badge.svg)](https://github.com/zacrogers/HeadToPy/actions/workflows/main.yml)
+
 Convert the data structures in a c header to their python equivalent
 
 ## How to use:
