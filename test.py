@@ -9,7 +9,7 @@ class NewLicenseeCode(Enum):
     NONE = 0x0000
     NINTENDO_RND = 0x0001
     CAPCOM = 0x0008
-	// TODO: more of these
+	# // TODO: more of these
 
 
 class SgbFlag(Enum):
