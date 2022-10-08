@@ -1,3 +1,4 @@
+#include <stdint.h>
 #define PYTHON_CONVERT_ENUM_START
 
 
