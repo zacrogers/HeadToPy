@@ -34,7 +34,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: PyPI Publish
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
         uses: pypa/gh-action-pypi-publish@v1.5.1
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
