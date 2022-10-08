@@ -1,10 +1,9 @@
-name: Publish to PyPI
-  on: [push]
-      branches: master
+on: [push]
 
 jobs:
-  name:
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
-    uses: pypa/gh-action-pypi-publish@release/v1
-    with:
-      password: ${{ secrets.HEAD_TO_PY_PYPI_API_TOKEN }}
+  publish:
+    name: Publish to PyPI
+      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        password: ${{ secrets.HEAD_TO_PY_PYPI_API_TOKEN }}
