@@ -8,7 +8,7 @@ setup(
     version=VERSION,
     description=DESCRIPTION,
     long_description='',
-    url='https://www.inverseaudio.co.nz',
+    url='https://github.com/zacrogers/HeadToPy',
     author='Zachary Rogers',
     author_email='z.m.rogers@gmail.com',
     packages=["head_to_py"],

@@ -30,6 +30,7 @@ class DelimiterMatchException(Exception):
 
 ''' Enum processing '''
 def _pythonize_enum_name(name: str) -> str:
+    ''' Convert snake to camel case and create class definition '''
     if name.count("_e") != 0:
         name = name.split("_e")[0]
 
@@ -38,7 +39,7 @@ def _pythonize_enum_name(name: str) -> str:
     return f"class {''.join(name)}(Enum):\n"
 
 
-def _remove_enum_val_type(val: str):
+def _remove_enum_val_type(val: str) -> str:
     ''' remove things like (uint8_t) from value'''
     val = val.split(")")
     if len(val) > 1:
@@ -71,6 +72,7 @@ def _pythonize_enum_values(vals: str, copy_comments: bool) -> str:
 
 
 def _parse_enums(data: str, copy_comments: bool, add_import=True) -> str:
+    ''' Convert c type enum to python enum '''
     enums = data.split("typedef enum")
     py_enums = ""
 
@@ -81,11 +83,7 @@ def _parse_enums(data: str, copy_comments: bool, add_import=True) -> str:
         if e.count("{") != 0:
             vals = e.split("{")[1].split("}")
             name = vals[-1].split(";")[0]
-            py_name = _pythonize_enum_name(name)
-
-            if py_name == False:
-                break
-            
+            py_name = _pythonize_enum_name(name)            
             py_vals = _pythonize_enum_values(vals[0], copy_comments)
             py_enums += f"{py_name}{py_vals}\n"
 
@@ -132,7 +130,7 @@ VALID_C_STRING = [
 ]
 
 
-def _defined_types(data: str):
+def _defined_types(data: str) -> list[str]:
     ''' Scan the header for all other struct types & enums defined within '''
     semi = data.split(";")
     types = []
@@ -180,7 +178,7 @@ def _pythonize_type_name(name: str) -> str:
     return ''.join([name.capitalize() for name in name])
 
 
-def _pythonize_struct_values(data: str, defined_types: list[str]):
+def _pythonize_struct_values(data: str, defined_types: list[str]) -> str:
     data = data.strip("{").replace("\n", "").replace("\t", "")
     lines = data.split(";")
     lines = [d for d in lines if d != ""]
@@ -211,7 +209,7 @@ def _pythonize_struct_values(data: str, defined_types: list[str]):
     return f"{output}\n\n" 
 
 
-def _parse_structs(data: str, copy_comments: bool, defined_types: list[str], add_import=True):
+def _parse_structs(data: str, copy_comments: bool, defined_types: list[str], add_import=True) -> str:
     s_start = [s.start() for s in re.finditer("{", data)] # start of fields
     s_end = [s.start() for s in re.finditer("}", data)]   # end of fields
     s_semi = [s.start() for s in re.finditer(";", data)]  # semicolons
@@ -286,8 +284,8 @@ def _check_define_guards(data: str) -> tuple[int, int]:
     return n_enum_start, n_struct_start
 
 
-def _clear_header_flags(header_file: str):
-    ''' Clear the header define guard flags '''
+def _clear_header_flags(header_file: str) -> None:
+    ''' Clear the header define guard flags from the source file '''
     old_head = ""
     with open(header_file, mode="r") as head:
         old_head = head.read()
@@ -339,8 +337,6 @@ def convert(file_from: str, file_to: str, copy_comments=True, clear_flags=False)
         _clear_header_flags(file_from)
 
 
-
-
 def main():
     parser = argparse.ArgumentParser(description="Convert datatypes in c header to the python equivalent.")
     parser.add_argument("-s", "--source", help="Source filename")
@@ -364,4 +360,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    convert("test.h", 'testes.py')
