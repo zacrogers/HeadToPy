@@ -3,7 +3,7 @@ on: [push]
 jobs:
   publish:
     steps:
-      - uses: pypa/gh-action-pypi-publish@v1.5.1
-        runs-on: ubuntu-latest
+      - name: PyPI Publish
+        uses: pypa/gh-action-pypi-publish@v1.5.1
         with:
           password: ${{ secrets.HEAD_TO_PY_PYPI_API_TOKEN }}
