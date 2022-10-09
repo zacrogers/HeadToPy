@@ -1,6 +1,6 @@
 from setuptools import setup
 
-VERSION = "0.0.2"
+VERSION = "0.0.3"
 DESCRIPTION = "Convert enums and structs in a c header to a python equivalent."
 
 setup(
@@ -14,4 +14,3 @@ setup(
     packages=["head_to_py"],
     classifiers=['Development Status :: 1 - Planning'],
 )
-

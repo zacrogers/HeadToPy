@@ -29,6 +29,7 @@ class DelimiterMatchException(Exception):
 
 
 ''' Enum processing '''
+@staticmethod
 def _pythonize_enum_name(name: str) -> str:
     ''' Convert snake to camel case and create class definition '''
     if name.count("_e") != 0:
@@ -39,6 +40,7 @@ def _pythonize_enum_name(name: str) -> str:
     return f"class {''.join(name)}(Enum):\n"
 
 
+@staticmethod
 def _remove_enum_val_type(val: str) -> str:
     ''' remove things like (uint8_t) from value'''
     val = val.split(")")
@@ -49,6 +51,7 @@ def _remove_enum_val_type(val: str) -> str:
     return val
 
 
+@staticmethod
 def _pythonize_enum_values(vals: str, copy_comments: bool) -> str:
     vals   = vals.split(",")
     output = ""
@@ -71,6 +74,7 @@ def _pythonize_enum_values(vals: str, copy_comments: bool) -> str:
     return output
 
 
+@staticmethod
 def _parse_enums(data: str, copy_comments: bool, add_import=True) -> str:
     ''' Convert c type enum to python enum '''
     enums = data.split("typedef enum")
@@ -129,7 +133,7 @@ VALID_C_STRING = [
     "char *"
 ]
 
-
+@staticmethod
 def _defined_types(data: str) -> list[str]:
     ''' Scan the header for all other struct types & enums defined within '''
     semi = data.split(";")
@@ -147,10 +151,12 @@ def _defined_types(data: str) -> list[str]:
     return types
 
 
+@staticmethod
 def _is_array(data: str) -> bool:
     return (data.count("[") > 0) and (data.count("]") > 0)
 
 
+@staticmethod
 def _pythonize_struct_name(name: str) -> str:
     name = name.strip("\n").replace("}", "")
 
@@ -164,6 +170,7 @@ def _pythonize_struct_name(name: str) -> str:
     return f"@dataclass\nclass {''.join(name)}:\n"
 
 
+@staticmethod
 def _pythonize_type_name(name: str) -> str:
     name = name.strip("\n").replace("}", "")
 
@@ -178,6 +185,7 @@ def _pythonize_type_name(name: str) -> str:
     return ''.join([name.capitalize() for name in name])
 
 
+@staticmethod
 def _pythonize_struct_values(data: str, defined_types: list[str]) -> str:
     data = data.strip("{").replace("\n", "").replace("\t", "")
     lines = data.split(";")
@@ -209,6 +217,7 @@ def _pythonize_struct_values(data: str, defined_types: list[str]) -> str:
     return f"{output}\n\n" 
 
 
+@staticmethod
 def _parse_structs(data: str, copy_comments: bool, defined_types: list[str], add_import=True) -> str:
     s_start = [s.start() for s in re.finditer("{", data)] # start of fields
     s_end = [s.start() for s in re.finditer("}", data)]   # end of fields
@@ -238,6 +247,7 @@ def _parse_structs(data: str, copy_comments: bool, defined_types: list[str], add
 
 
 ''' General functions '''
+@staticmethod
 def _gather_marked_data(data: str) -> tuple[str, str]:
     ''' Gather all the data inside define guards. Assumes define guards have already been checked. '''
     enums  = ""
@@ -256,12 +266,12 @@ def _gather_marked_data(data: str) -> tuple[str, str]:
 
     return enums, structs
 
-
+@staticmethod
 def _save_python_file(name: str, data: str) -> None:
     with open(name, "w") as f:        
         f.write(data)
 
-
+@staticmethod
 def _check_define_guards(data: str) -> tuple[int, int]:
     n_enum_start   = data.count(DefineGuard.ENUM_START.value)
     n_enum_end     = data.count(DefineGuard.ENUM_END.value)
@@ -284,6 +294,7 @@ def _check_define_guards(data: str) -> tuple[int, int]:
     return n_enum_start, n_struct_start
 
 
+@staticmethod
 def _clear_header_flags(header_file: str) -> None:
     ''' Clear the header define guard flags from the source file '''
     old_head = ""
@@ -301,6 +312,7 @@ def _clear_header_flags(header_file: str) -> None:
         head.write(new_head)
 
 
+@staticmethod
 def convert(file_from: str, file_to: str, copy_comments=True, clear_flags=False) -> None:
     with open(file_from, mode="r") as f_from:
         logging.info(f"Loading {file_from}")
